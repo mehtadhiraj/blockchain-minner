@@ -1,0 +1,23 @@
+let admin = require("firebase-admin");
+let { proofOfWork } = require('./minnnigAlgo');
+let serviceAccount = require("./blockchain-banking.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://blockchain-banking.firebaseio.com"
+});
+
+let db = admin.database();
+let ref = db.ref("/transactions");
+
+ref.on("child_added", function(snapshot) {
+  let data = snapshot.key;   //Data is in JSON format.
+  let keyRef = db.ref('/transactions/'+data);
+  keyRef.once('value', function(snap){
+    // console.log(snap.val());
+    let hash = snap.val().hash;
+    let nonce = proofOfWork(hash);
+    // console.log(nonce);
+    keyRef.child('nonce').push(nonce);
+  });
+});
