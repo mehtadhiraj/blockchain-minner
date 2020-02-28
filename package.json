@@ -1,0 +1,19 @@
+{
+  "name": "minner",
+  "version": "1.0.0",
+  "description": "",
+  "main": "firebase.js",
+  "dependencies": {
+    "crypto-js": "^4.0.0",
+    "firebase-admin": "^8.9.2",
+    "json-stable-stringify": "^1.0.1",
+    "nodemon": "^2.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "nodemon firebase.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
