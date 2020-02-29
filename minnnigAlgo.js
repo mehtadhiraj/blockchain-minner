@@ -1,9 +1,9 @@
 const CryptoJs = require("crypto-js");
-const stringify = require('json-stable-stringify');
+// const stringify = require('json-stable-stringify');
 
-function hashData(block){
-    return CryptoJs.SHA256(stringify(block)).toString(CryptoJs.enc.Hex);
-}
+// function hashData(block){
+//     return CryptoJs.SHA256(stringify(block)).toString(CryptoJs.enc.Hex);
+// }
 
 
 function isValidProof(last_proof,proof){
@@ -28,12 +28,6 @@ function proofOfWork(last_proof){
     
 }
 
-
-// let hashValue  = hashData(data);
-// let proofGenerated = proofOfWork(hashValue);
-// console.log(proofGenerated);
-
 module.exports = {
-    hashData,
     proofOfWork
 }

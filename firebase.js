@@ -1,10 +1,11 @@
 let admin = require("firebase-admin");
 let { proofOfWork } = require('./minnnigAlgo');
 let serviceAccount = require("./blockchain-banking.json");
+require('dotenv').config();
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://blockchain-banking.firebaseio.com"
+  databaseURL: process.env.FIREBASE_URL
 });
 
 let db = admin.database();
