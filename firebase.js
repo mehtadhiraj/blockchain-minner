@@ -1,5 +1,5 @@
 const admin = require("firebase-admin");
-const { proofOfWork } = require('./minnnigAlgo');
+const { proofOfWork, encrypt } = require('./minnnigAlgo');
 const serviceAccount = require("./blockchain-banking.json");
 let chainData = {};
 require('dotenv').config();
@@ -19,7 +19,7 @@ ref.on("child_added", function(snapshot) {
   console.info("New Transaction Added.");
   let data = snapshot.key;   //Data is in JSON format.
   let keyRef = db.ref('/transactions/'+data);
-  console.log({ data: data.split('-'), len: data.split('-').length });
+  // console.log({ data: data.split('-'), len: data.split('-').length });
   
   if(data.split('-').length == 3){
     keyRef.once('value', function(snap){
@@ -27,8 +27,10 @@ ref.on("child_added", function(snapshot) {
       let hash = snap.val().hash;
       console.info("Calculating Nonce...");
       let nonce = proofOfWork(hash);
-      // console.log(nonce);
+      let nonceHash  = encrypt(nonce, hash);
+      console.log({ nonce, nonceHash });
       keyRef.child('nonce').push(nonce);
+      keyRef.child('nonceHash').push(nonceHash);
       console.info("Nonce Added.");
     });
   }else{
@@ -41,7 +43,7 @@ ref.on("child_added", function(snapshot) {
         chainData[data.split('-')[0]] = encryptedChain;
         keyRef.child('hash').push(encryptedChain);
       }
-      console.log({ encryptedChain, hash, chainData });
+      // console.log({ encryptedChain, hash, chainData });
       console.info("Chain hash added.");
     })
   }

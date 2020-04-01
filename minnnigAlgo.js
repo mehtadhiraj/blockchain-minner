@@ -1,4 +1,6 @@
 const CryptoJs = require("crypto-js");
+const crypto          = require('crypto');
+
 // const stringify = require('json-stable-stringify');
 
 // function hashData(block){
@@ -28,6 +30,18 @@ function proofOfWork(last_proof){
     
 }
 
+function encrypt(nonce, hash){
+    // console.log({hash});
+    nonce = nonce.toString();
+    let key = crypto.createCipher('aes-128-cbc', nonce);
+    // hash = JSON.stringify(hash);
+    let hashValue = key.update(hash, 'utf8', 'hex');
+    hashValue = hashValue + key.final('hex');
+    // console.log({hash});
+    return hash;
+}
+
 module.exports = {
-    proofOfWork
+    proofOfWork,
+    encrypt
 }
