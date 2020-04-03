@@ -56,7 +56,7 @@ broadCastRef.on("child_added", function(snapshot){
     let chain = snap.val().chain;
     chainData[broadData.split('-')[0]] = chain;
   })
-  console.log(chainData);
+  console.log({chainData});
 })
 
 console.log("Minner Started.");
