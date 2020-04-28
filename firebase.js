@@ -14,7 +14,7 @@ let ref = db.ref("/transactions");
 let broadCastRef = db.ref("/broadcast");
 
 ref.on("child_added", function(snapshot) {
-  console.log(chainData);
+  // console.log(chainData);
   
   console.info("New Transaction Added.");
   let data = snapshot.key;   //Data is in JSON format.
@@ -28,13 +28,14 @@ ref.on("child_added", function(snapshot) {
       console.info("Calculating Nonce...");
       let nonce = proofOfWork(hash);
       let nonceHash  = encrypt(nonce, hash);
-      console.log({ nonce, nonceHash });
+      // console.log({ nonce, nonceHash });
       keyRef.child('nonce').push(nonce);
       keyRef.child('nonceHash').push(nonceHash);
-      console.info("Nonce Added.");
+      console.info("Nonce Added!!.");
     });
   }else{
     keyRef.once('value', function(snap){
+      console.log("Validating Chain ...."); 
       let encryptedChain = snap.val().encryptedChain;
       let hash = chainData[data.split('-')[0]];
       if(hash){
@@ -50,13 +51,15 @@ ref.on("child_added", function(snapshot) {
 });
 
 broadCastRef.on("child_added", function(snapshot){
+  console.log("Broadcasting updated transaction ....");
   let broadData = snapshot.key;
   let broadKeyRef = db.ref('broadcast/'+broadData);
   broadKeyRef.once('value', function(snap){
     let chain = snap.val().chain;
     chainData[broadData.split('-')[0]] = chain;
   })
-  console.log({chainData});
+  console.log("Transaction chain updated.");
+  // console.log({chainData});
 })
 
 console.log("Minner Started.");
