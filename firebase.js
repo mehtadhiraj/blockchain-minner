@@ -59,7 +59,7 @@ broadCastRef.on("child_added", function(snapshot){
     chainData[broadData.split('-')[0]] = chain;
   })
   console.log("Transaction chain updated.");
-  // console.log({chainData});
+  console.log({chainData});
 })
 
 console.log("Minner Started.");
